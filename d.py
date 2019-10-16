@@ -44,7 +44,7 @@ class DataFrameOperations:
                         if(i == k):
                             continue
                         if(list_of_all_columns[i][j] == list_of_all_columns[k][l]):
-                            content = str(str(i) + " " + str(k) + " " + list_of_all_columns[i][j] + " " + column + "\n")
+                            content = str(str(i) + " " + str(k) + "\n")
                             f.write(content)
         
         f.close()
