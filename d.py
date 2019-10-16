@@ -37,15 +37,15 @@ class DataFrameOperations:
         skipper = 0
         f = open("common_columns.txt", "a")
         
-        # f.close()
         for i, list_columns_in_frame in enumerate(list_of_all_columns):
             for j, column in enumerate(list_columns_in_frame):
-                if(i == skipper):
-                    skipper = skipper+1
-                    continue
-                if(list_of_all_columns[i][j] == column):
-                    content = str(str(i) + " " + str(j) + " " + list_of_all_columns[i][j] + " " + column + "\n")
-                    f.write(content)
+                for k, list_columns_in_frame in enumerate(list_of_all_columns):
+                    for l, column in enumerate(list_columns_in_frame):
+                        if(i == k):
+                            continue
+                        if(list_of_all_columns[i][j] == list_of_all_columns[k][l]):
+                            content = str(str(i) + " " + str(k) + " " + list_of_all_columns[i][j] + " " + column + "\n")
+                            f.write(content)
         
         f.close()
                         
