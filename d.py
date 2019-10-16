@@ -26,15 +26,29 @@ class DataFrameOperations:
         for col_list in list_of_all_columns:
             for col in col_list:
                 all_columns.append(col)
-        list_set = set(all_columns) 
-
-
-        print(len(all_columns))
+        list_set = set(all_columns)
+        # print("Total number of columns",len(all_columns))
         unique_list = (list(list_set)) 
-        print(len(unique_list))
+        # print("Total number of unique columns", len(unique_list))
+        # print(unique_list)
+        self.createMatrixofCommonColumns(list_of_all_columns)
+
+    def createMatrixofCommonColumns(self, list_of_all_columns):
+        skipper = 0
+        f = open("common_columns.txt", "a")
         
-
-
+        # f.close()
+        for i, list_columns_in_frame in enumerate(list_of_all_columns):
+            for j, column in enumerate(list_columns_in_frame):
+                if(i == skipper):
+                    skipper = skipper+1
+                    continue
+                if(list_of_all_columns[i][j] == column):
+                    content = str(str(i) + " " + str(j) + " " + list_of_all_columns[i][j] + " " + column + "\n")
+                    f.write(content)
+        
+        f.close()
+                        
 
 rf = ReadFiles()
 dfo = DataFrameOperations()
