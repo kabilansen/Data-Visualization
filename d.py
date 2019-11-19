@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 DATADIR = "P:\Python\Project\Data_Viz\data"
 LIST_RACE = ["# Asian","# Black","# White","# Hispanic","# Multiple Race Categories Not Represented"]
 LIST_RACE = ["Grade 2","Grade 1"]
+LIST_RACE = ["# Female", "# Male"]
 
 class ReadFiles:
     def readFilesFromFolder(self):
