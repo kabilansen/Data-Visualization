@@ -36,7 +36,7 @@ class DataFrameOperations:
             columns[index] = [int(entry[0]), int(entry[1]), entry[2]]
         result = [column for column in columns if columnName in column]
         uniqueFileIndex = [id for elements in result for id in elements] 
-        print([item for item in set(uniqueFileIndex) if isinstance(item, int)])      
+        print("Column \""+ columnName + "\" is found in: ", [item for item in set(uniqueFileIndex) if isinstance(item, int)])      
 
         
 
