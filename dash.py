@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 
 
 DATADIR = "P:\Python\Project\Data_Viz\data"
-LIST_RACE = ["# Asian","# Black","# White","# Hispanic","# Multiple Race Categories Not Represented"]
+LIST_RACE = []
+# LIST_RACE = ["# Asian","# Black","# White","# Hispanic","# Multiple Race Categories Not Represented"]
 # LIST_RACE = ["Grade 2","Grade 1"]
 # LIST_RACE = ["# Female", "# Male"]
 
@@ -110,31 +111,9 @@ class visualization:
          plt.hist(x)
          plt.show()
 
-
-    
-
-
-if __name__ == "__main__":
-    column = input("Enter the coulmn name you want to find: ")
-    print("Searching for: {a}".format(a = column))
-
-    rf = ReadFiles()
-    dfo = DataFrameOperations()
-
-    # print(DATADIR)
-
-    list_of_data_frames = rf.readFilesFromFolder()
-    result = dfo.searchForColumns(column, list_of_data_frames)
-    # exit()
-
-    all_columns = dfo.getUniqueColumnsAcrossFrames(list_of_data_frames)
-
-    # df1 = pd.read_csv(DATADIR+r"\04_2013_-_2018_Demographic_Snapshot_District.csv",) 
-    # df2 = pd.read_csv(DATADIR+r"\02_2015_-_2018_Demographic_Snapshot_Pre-_K_For_All.csv") 
-    df3 = pd.read_csv(DATADIR+r"\03_2013_-_2018_Demographic_Snapshot_Borough.csv") 
-    df4 = pd.read_csv(DATADIR+r"\04_2013_-_2018_Demographic_Snapshot_District.csv") 
-    # df5 = pd.read_csv(DATADIR+r"\05_2017_-_2018_Demographic_Snapshot_3-_K_For_All.csv") 
+def doMain():
     list_of_input_dataframes = []
+    all_columns = dfo.getUniqueColumnsAcrossFrames(list_of_data_frames)
     for index in result:
         list_of_input_dataframes.append(list_of_data_frames[index])
     list_dict_pie = list()  
@@ -144,3 +123,31 @@ if __name__ == "__main__":
         list_dict_pie.append(race.calculateSum(LIST_RACE,df))
     for _dict in list_dict_pie:
         vis.drawPieChart(_dict)
+    
+
+
+if __name__ == "__main__":
+    rf = ReadFiles()
+    dfo = DataFrameOperations()
+    flag = True
+    while(flag):
+        column = input("Enter the coulmn name you want to find: ")
+        if(column == 'stop'):
+            doMain()
+        if(column == 'exit'):
+            exit()
+        print("Searching for: {a}".format(a = column))
+        LIST_RACE.append(column)
+        
+
+        # print(DATADIR)
+
+        list_of_data_frames = rf.readFilesFromFolder()
+        result = dfo.searchForColumns(column, list_of_data_frames)
+
+    # exit()
+    
+    
+
+
+    
