@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+Dataset_Count = 1
 DATADIR = "P:\Python\Project\Data_Viz\data"
 LIST_RACE = []
 # LIST_RACE = ["# Asian","# Black","# White","# Hispanic","# Multiple Race Categories Not Represented"]
@@ -74,14 +74,17 @@ class DataFrameOperations:
 
 
 class Race:
-    def calculateSum(self,LIST_RACE,dataframe):
+    def calculateSum(self,type_of_chart,LIST_RACE,dataframe):
         total_sum = 0
         dict_sum_race = dict()
         for race in LIST_RACE:
             _sum = dataframe[race].sum()
             dict_sum_race[race] = _sum
             total_sum+=_sum
-        return self.calculatePercentage(total_sum,dict_sum_race)
+        if(type_of_chart == 'pie'):return self.calculatePercentage(total_sum,dict_sum_race)
+        print(dict_sum_race)
+        return dict_sum_race
+        
 
       
     def calculatePercentage(self,total_sum,dict_sum_race):
@@ -104,36 +107,60 @@ class visualization:
         shadow=True, startangle=90)
             ax1.axis('equal')
             plt.show()  
-      def drawHistogram(self):
-         
-         std_values = stddev_dataset_1.tolist()
-         x = [std_values]
-         plt.hist(x)
-         plt.show()
+      def drawHistogram(self, sum_dict):
+        global Dataset_Count
+        objects = sum_dict.keys()
+        y_pos = np.arange(len(objects))
+        performance = sum_dict.values()
 
-def doMain():
-    list_of_input_dataframes = []
-    all_columns = dfo.getUniqueColumnsAcrossFrames(list_of_data_frames)
-    for index in result:
-        list_of_input_dataframes.append(list_of_data_frames[index])
-    list_dict_pie = list()  
-    for df in list_of_input_dataframes:
-        race = Race()
-        vis = visualization()
-        list_dict_pie.append(race.calculateSum(LIST_RACE,df))
-    for _dict in list_dict_pie:
-        vis.drawPieChart(_dict)
+        plt.bar(y_pos, performance, align='center', alpha=0.5)
+        plt.xticks(y_pos, objects)
+        plt.ylabel('Count')
+        plt.title("Dataset: "+str(Dataset_Count))
+        Dataset_Count+=1
+        plt.show()
+
+def doMain(type_of_chart):
+    if(type_of_chart == 'pie'):
+        list_of_input_dataframes = []
+        all_columns = dfo.getUniqueColumnsAcrossFrames(list_of_data_frames)
+        for index in result:
+            list_of_input_dataframes.append(list_of_data_frames[index])
+        list_dict_pie = list()  
+        for df in list_of_input_dataframes:
+            race = Race()
+            vis = visualization()
+            list_dict_pie.append(race.calculateSum('pie',LIST_RACE,df))
+        for _dict in list_dict_pie:
+            vis.drawPieChart(_dict)
+    elif(type_of_chart == 'bar'):
+        list_of_input_dataframes = []
+        all_columns = dfo.getUniqueColumnsAcrossFrames(list_of_data_frames)
+        for index in result:
+            list_of_input_dataframes.append(list_of_data_frames[index])
+        list_dict_pie = list()  
+        for df in list_of_input_dataframes:
+            race = Race()
+            vis = visualization()
+            list_dict_pie.append(race.calculateSum('bar',LIST_RACE,df))
+        for _dict in list_dict_pie:
+            vis.drawHistogram(_dict)
     
 
 
 if __name__ == "__main__":
+    result = []
     rf = ReadFiles()
     dfo = DataFrameOperations()
     flag = True
     while(flag):
         column = input("Enter the coulmn name you want to find: ")
-        if(column == 'stop'):
-            doMain()
+        if(column == 'pie'):
+            result = list(set.intersection(*map(set, result))) 
+            doMain('pie')
+        if(column == 'bar'):
+            result = list(set.intersection(*map(set, result))) 
+            doMain('bar')
         if(column == 'exit'):
             exit()
         print("Searching for: {a}".format(a = column))
@@ -143,7 +170,7 @@ if __name__ == "__main__":
         # print(DATADIR)
 
         list_of_data_frames = rf.readFilesFromFolder()
-        result = dfo.searchForColumns(column, list_of_data_frames)
+        result.append(dfo.searchForColumns(column, list_of_data_frames))
 
     # exit()
     
